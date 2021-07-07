@@ -170,6 +170,21 @@ def add_aws_user_to_group(client, user_pool_id: str, user: str, group: str) -> N
     assert response["ResponseMetadata"]["HTTPStatusCode"] == 200
 
 
+def cognito_handler(event, context) -> None:
+    send_slack_message(
+        f"""
+        Authentication successful.
+        Trigger function = {event['triggerSource']})
+        User pool = {event['userPoolId']}
+        App client ID {event['callerContext']['clientId']}
+        User ID = {event['userName']}
+    """
+    )
+
+    # Return to Amazon Cognito
+    return event
+
+
 @click.group()
 def cli():
     pass
