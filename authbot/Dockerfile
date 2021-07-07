@@ -1,7 +1,7 @@
 # Define function directory
 ARG FUNCTION_DIR="/function"
 
-FROM python:3.7.7-stretch as base
+FROM python:3.9.4-slim-buster as base
 
 FROM base as build
 # Install aws-lambda-cpp build dependencies
@@ -29,7 +29,7 @@ RUN pip install \
 	-r requirements.txt
 
 # Multi-stage build: grab a fresh copy of the base image
-FROM base
+FROM base as run
 
 # Include global arg in this stage of the build
 ARG FUNCTION_DIR
