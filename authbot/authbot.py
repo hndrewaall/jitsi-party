@@ -177,10 +177,12 @@ def cognito_handler(event, context) -> None:
         slack_client,
         f"""
         Authentication successful.
-        Trigger function = {event['triggerSource']})
+        Trigger function = {event['triggerSource']}
         User pool = {event['userPoolId']}
         App client ID {event['callerContext']['clientId']}
         User ID = {event['userName']}
+
+        Event keys = {event.keys()}
     """,
     )
 
