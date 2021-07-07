@@ -35,6 +35,7 @@ ADD https://github.com/aws/aws-lambda-runtime-interface-emulator/releases/downlo
 RUN chmod +x /usr/local/bin/aws-lambda-rie
 
 COPY entrypoint.sh .
+RUN chmod +x /entrypoint.sh
 
 # Include global arg in this stage of the build
 ARG FUNCTION_DIR
@@ -45,5 +46,5 @@ WORKDIR ${FUNCTION_DIR}
 COPY --from=build ${FUNCTION_DIR} ${FUNCTION_DIR}
 COPY authbot.py ${FUNCTION_DIR}
 
-ENTRYPOINT [ "./entrypoint.sh ]
+ENTRYPOINT [ "/entrypoint.sh" ]
 CMD [ "authbot.cognito_handler" ]
