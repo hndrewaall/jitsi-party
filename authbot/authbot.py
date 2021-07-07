@@ -171,14 +171,17 @@ def add_aws_user_to_group(client, user_pool_id: str, user: str, group: str) -> N
 
 
 def cognito_handler(event, context) -> None:
+    slack_client = WebClient(token=os.environ.get("SLACK_BOT_TOKEN"))
+
     send_slack_message(
+        slack_client,
         f"""
         Authentication successful.
         Trigger function = {event['triggerSource']})
         User pool = {event['userPoolId']}
         App client ID {event['callerContext']['clientId']}
         User ID = {event['userName']}
-    """
+    """,
     )
 
     # Return to Amazon Cognito

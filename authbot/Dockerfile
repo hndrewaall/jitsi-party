@@ -31,6 +31,11 @@ RUN pip install \
 # Multi-stage build: grab a fresh copy of the base image
 FROM base as run
 
+ADD https://github.com/aws/aws-lambda-runtime-interface-emulator/releases/download/v1.0/aws-lambda-rie /usr/local/bin/aws-lambda-rie
+RUN chmod +x /usr/local/bin/aws-lambda-rie
+
+COPY entrypoint.sh .
+
 # Include global arg in this stage of the build
 ARG FUNCTION_DIR
 # Set working directory to function root directory
@@ -40,5 +45,5 @@ WORKDIR ${FUNCTION_DIR}
 COPY --from=build ${FUNCTION_DIR} ${FUNCTION_DIR}
 COPY authbot.py ${FUNCTION_DIR}
 
-ENTRYPOINT [ "/usr/local/bin/python", "-m", "awslambdaric" ]
+ENTRYPOINT [ "./entrypoint.sh ]
 CMD [ "authbot.cognito_handler" ]
